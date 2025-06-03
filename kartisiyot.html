@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>כרטיסיות מתחילי שיחה לילדים</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-bottom: 100px;
+        }
+        
+        /* לוגו עגול בפינה הימנית */
+        .top-logo {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            z-index: 1000;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .top-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* לוגו עם כיתוב בתחתית */
+        .bottom-logo {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: rgba(255,255,255,0.95);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .bottom-logo img {
+            max-height: 60px;
+            width: auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            background: rgba(255,255,255,0.8);
+            border: none;
+            padding: 15px 25px;
+            border-radius: 15px 15px 0 0;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #333;
+        }
+        
+        .tab.active {
+            background: white;
+            transform: translateY(2px);
+        }
+        
+        .tab:hover {
+            background: rgba(255,255,255,0.9);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .controls {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        
+        .section {
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .age-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .age-btn {
+            background: #f0f0f0;
+            border: 2px solid transparent;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .age-btn.active {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .category-item {
+            display: flex;
+            align-items: center;
+            background: #f8f9fa;
+            padding: 12px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .category-item.selected {
+            background: #e3f2fd;
+            border-color: #2196f3;
+        }
+        
+        .category-item input {
+            margin-left: 10px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #2196f3;
+            color: white;
+        }
+        
+        .cards-container {
+            margin-top: 30px;
+        }
+        
+        .category-section {
+            margin-bottom: 40px;
+        }
+        
+        .category-header {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: white;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+        }
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-top: 5px solid var(--color);
+        }
+        
+        .card-text {
+            font-size: 1.1rem;
+            line-height: 1.4;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .greetings { --color: #ff9ff3; }
+        .compliments { --color: #54a0ff; }
+        .attention { --color: #5f27cd; }
+        .getting-to-know { --color: #00d2d3; }
+        .joining { --color: #ff6348; }
+        .empathy { --color: #2ed573; }
+        .israeli { --color: #ffa502; }
+        .creative { --color: #ff4757; }
+        .holidays { --color: #fd79a8; }
+        .family { --color: #fdcb6e; }
+        .hobbies { --color: #6c5ce7; }
+        .school { --color: #a29bfe; }
+        .teenagers { --color: #e84393; }
+        
+        .instructions {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-right: 5px solid #007bff;
+        }
+        
+        .instructions h3 {
+            color: #007bff;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .instructions p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .instructions ul {
+            margin-right: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .age-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .age-box {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-top: 4px solid var(--age-color);
+        }
+        
+        .age-5-8 { --age-color: #ff6b6b; }
+        .age-9-12 { --age-color: #4ecdc4; }
+        .age-13-16 { --age-color: #45b7d1; }
+        .age-16-18 { --age-color: #96ceb4; }
+        
+        .highlight {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .highlight strong {
+            color: #856404;
+        }
+        
+        @media print {
+            body { background: white !important; }
+            .controls, .top-logo, .tabs { display: none !important; }
+            .bottom-logo {
+                position: fixed !important;
+                bottom: 10px !important;
+                background: white !important;
+                box-shadow: none !important;
+            }
+            h1 { color: #333 !important; text-shadow: none !important; }
+            .category-header { color: #333 !important; background: #f0f0f0 !important; }
+        }
+    </style>
+</head>
+<body>
+    <!-- לוגו עגול בפינה הימנית -->
+    <div class="top-logo">
+        <img src="logo-circle.png" alt="לוגו עגול">
+    </div>
+    
+    <!-- לוגו עם כיתוב בתחתית -->
+    <div class="bottom-logo">
+        <img src="logo-text.png" alt="לוגו עם כיתוב">
+    </div>
+
+    <div class="container">
+        <h1>🗣️ כרטיסיות מתחילי שיחה לילדים</h1>
+        
+        <!-- טאבים -->
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('cards-tab', this)">🎯 כרטיסיות</button>
+            <button class="tab" onclick="showTab('instructions-tab', this)">📖 הוראות שימוש</button>
+        </div>
+        
+        <!-- תוכן הכרטיסיות -->
+        <div id="cards-tab" class="tab-content active">
+            <div class="controls">
+                <div class="section">
+                    <div class="section-title">🎯 בחר קבוצת גיל:</div>
+                    <div class="age-buttons">
+                        <button class="age-btn" onclick="selectAge('5-8')">גילאי 5-8</button>
+                        <button class="age-btn" onclick="selectAge('9-12')">גילאי 9-12</button>
+                        <button class="age-btn" onclick="selectAge('13-16')">גילאי 13-16</button>
+                        <button class="age-btn" onclick="selectAge('16-18')">גילאי 16-18</button>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">📂 בחר קטגוריות:</div>
+                    <div class="category-grid">
+                        <div class="category-item" onclick="toggleCategory('greetings', this)">
+                            <span>👋 ברכות</span>
+                            <input type="checkbox" id="greetings">
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('compliments', this)">
+                            <span>⭐ מחמאות</span>
+                            <input type="checkbox" id="compliments">
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('attention', this)">
+                            <span>👀 תשומת לב משותפת</span>
+                            <input type="checkbox" id="attention">
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('getting-to-know', this)">
+                            <span>🤔 שאלות היכרות</span>
+                            <input type="checkbox" id="getting-to-know">
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('joining', this)">
+                            <span>🤝 הצטרפות</span>
+                            <input type="checkbox" id="joining">
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('empathy', this)">
+                            <span>💙 עזרה ותמיכה</span>
+                            <input type="checkbox" id="empathy">
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('israeli', this)">
+                            <span>🇮🇱 נושאים ישראליים</span>
+                            <input type="checkbox" id="israeli">
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('creative', this)">
+                            <span>✨ שאלות יצירתיות</span>
+                            <input type="checkbox" id="creative">
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('holidays', this)">
+                            <span>🎉 חגים ואירועים</span>
+                            <input type="checkbox" id="holidays">
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('family', this)">
+                            <span>🏠 משפחה ובית</span>
+                            <input type="checkbox" id="family">
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('hobbies', this)">
+                            <span>🎯 תחביבים ופעילויות</span>
+                            <input type="checkbox" id="hobbies">
+                        </div>
+                        <div class="category-item" onclick="toggleCategory('school', this)">
+                            <span>🚌 בית ספר וכיתה</span>
+                            <input type="checkbox" id="school">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="showCards()">הצג כרטיסיות</button>
+                    <button class="btn btn-secondary" onclick="window.print()">🖨️ הדפס</button>
+                </div>
+            </div>
+            
+            <div class="cards-container" id="cardsContainer"></div>
+        </div>
+        
+        <!-- תוכן ההוראות -->
+        <div id="instructions-tab" class="tab-content">
+            <div class="controls">
+                <div class="instructions">
+                    <h3>🎯 מטרת הכרטיסיות</h3>
+                    <p>כרטיסיות מתחילי שיחה נועדו לעזור לילדים ובני נוער לפתח כישורי תקשורת חברתית ולבנות ביטחון עצמי במצבים חברתיים שונים.</p>
+                    
+                    <div class="highlight">
+                        <strong>חשוב לזכור:</strong> המטרה היא להתחיל שיחה טבעית, לא לקרוא מילה במילה מהכרטיסיה!
+                    </div>
+                </div>
+                
+                <div class="instructions">
+                    <h3>📋 איך להשתמש באתר</h3>
+                    <ol>
+                        <li><strong>בחר קבוצת גיל</strong> - לחץ על הגיל המתאים לילד</li>
+                        <li><strong>בחר קטגוריות</strong> - סמן את הנושאים הרלוונטיים (אפשר לבחור כמה)</li>
+                        <li><strong>לחץ "הצג כרטיסיות"</strong> - הכרטיסיות יופיעו למטה</li>
+                        <li><strong>הדפס</strong> - לחץ על כפתור ההדפסה לקבלת כרטיסיות להדפסה</li>
+                    </ol>
+                </div>
+                
+                <div class="instructions">
+                    <h3>👥 קבוצות גיל ומאפיינים</h3>
+                    <div class="age-info">
+                        <div class="age-box age-5-8">
+                            <h4>🧒 גילאי 5-8</h4>
+                            <p><strong>מאפיינים:</strong> שפה פשוטה, נושאים קונקרטיים, משחק ופעילות</p>
+                            <p><strong>מתאים ל:</strong> גן חובה, כיתות א'-ג'</p>
+                        </div>
+                        
+                        <div class="age-box age-9-12">
+                            <h4>👦 גילאי 9-12</h4>
+                            <p><strong>מאפיינים:</strong> עניין בחברים, תחביבים, בית ספר</p>
+                            <p><strong>מתאים ל:</strong> כיתות ד'-ו', תחילת גיל ההתבגרות</p>
+                        </div>
+                        
+                        <div class="age-box age-13-16">
+                            <h4>🧑 גילאי 13-16</h4>
+                            <p><strong>מאפיינים:</strong> זהות אישית, יחסים חברתיים מורכבים</p>
+                            <p><strong>מתאים ל:</strong> חטיבת ביניים, תיכון</p>
+                        </div>
+                        
+                        <div class="age-box age-16-18">
+                            <h4>👨 גילאי 16-18</h4>
+                            <p><strong>מאפיינים:</strong> עתיד, צבא, מערכות יחסים רומנטיות</p>
+                            <p><strong>מתאים ל:</strong> תיכון עליון, מכינה קדם-צבאית</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="instructions">
+                    <h3>🗂️ הקטגוריות ושימושיהן</h3>
+                    <ul>
+                        <li><strong>👋 ברכות</strong> - לפתיחת קשר ראשוני עם ילדים חדשים</li>
+                        <li><strong>⭐ מחמאות</strong> - לחיזוק יחסים ויצירת אווירה חיובית</li>
+                        <li><strong>👀 תשומת לב משותפת</strong> - לשיחה על הסביבה הקרובה</li>
+                        <li><strong>🤔 שאלות היכרות</strong> - לגילוי תחומי עניין משותפים</li>
+                        <li><strong>🤝 הצטרפות</strong> - לבקשת הצטרפות למשחק או פעילות</li>
+                        <li><strong>💙 עזרה ותמיכה</strong> - לבניית יחסי אמון ועזרה הדדית</li>
+                        <li><strong>🇮🇱 נושאים ישראליים</strong> - שיחות על תרבות ומסורת ישראלית</li>
+                        <li><strong>✨ שאלות יצירתיות</strong> - לפיתוח דמיון ושיחות מעמיקות</li>
+                        <li><strong>🎉 חגים ואירועים</strong> - שיחות על חגים ואירועים מיוחדים</li>
+                        <li><strong>🏠 משפחה ובית</strong> - שיחות על החיים המשפחתיים</li>
+                        <li><strong>🎯 תחביבים ופעילויות</strong> - גילוי תחומי עניין משותפים</li>
+                        <li><strong>🚌 בית ספר וכיתה</strong> - שיחות על החיים הלימודיים</li>
+                    </ul>
+                </div>
+                
+                <div class="instructions">
+                    <h3>💡 טיפים לשימוש מוצלח</h3>
+                    
+                    <h4>✅ מה כן לעשות:</h4>
+                    <ul>
+                        <li>התחילו עם שאלות פשוטות (ברכות, מחמאות)</li>
+                        <li>תרגלו בבית עם הילד לפני השימוש</li>
+                        <li>התאימו את השפה לגיל ולמצב</li>
+                        <li>תקשיבו לתשובה ותגיבו באופן טבעי</li>
+                        <li>עודדו כל ניסיון - גם אם לא מושלם</li>
+                        <li>השתמשו בשאלות כנקודת התחלה לשיחה חופשית</li>
+                    </ul>
+                    
+                    <h4>❌ מה לא לעשות:</h4>
+                    <ul>
+                        <li>אל תקרא מילה במילה מהכרטיסיה</li>
+                        <li>אל תשתמש בכל השאלות בבת אחת</li>
+                        <li>אל תלחץ אם מישהו לא רוצה לדבר</li>
+                        <li>אל תתן מחמאות לא כנות</li>
+                        <li>אל תוותר אחרי ניסיון אחד</li>
+                    </ul>
+                </div>
+                
+                <div class="instructions">
+                    <h3>🏃‍♂️ מצבים מתאימים לשימוש</h3>
+                    <ul>
+                        <li>הפסקות בבית הספר</li>
+                        <li>פעילויות חוגים</li>
+                        <li>מסיבות יום הולדת</li>
+                        <li>פגישות עם ילדים חדשים</li>
+                        <li>טיולים ופעילויות חברתיות</li>
+                        <li>פעילויות קיץ ומחנות</li>
+                        <li>כל מצב חברתי בו רוצים להכיר אנשים חדשים</li>
+                    </ul>
+                </div>
+                
+                <div class="instructions">
+                    <h3>🎯 איך לדעת שהכרטיסיות עובדות?</h3>
+                    <p>הילד מתחיל:</p>
+                    <ul>
+                        <li>לפתח יותר ביטחון בשיחות</li>
+                        <li>להשתמש בכרטיסיות פחות ולדבר יותר טבעי</li>
+                        <li>ליצור חברויות חדשות</li>
+                        <li>להרגיש נוח יותר במצבים חברתיים</li>
+                        <li>לפתח שיחות באופן עצמאי</li>
+                        <li>לגלות ביטחון עצמי גבוה יותר</li>
+                    </ul>
+                    
+                    <div class="highlight">
+                        <strong>זכרו:</strong> המטרה היא לבנות ביטחון עצמי ולא תלות בכרטיסיות. התהליך לוקח זמן וסבלנות!
+                    </div>
+                </div>
+                
+                <div class="instructions">
+                    <h3>⚠️ הערות חשובות</h3>
+                    <ul>
+                        <li>כרטיסיות אלו הן כלי עזר בלבד</li>
+                        <li>הן לא מחליפות טיפול מקצועי במקרים של קשיים משמעותיים</li>
+                        <li>כל ילד הוא ייחודי - התאימו את השימוש לצרכים האישיים</li>
+                        <li>במקרה של קשיים חברתיים חמורים, מומלץ לפנות לייעוץ מקצועי</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedAge = '';
+        let selectedCategories = [];
+        
+        function showTab(tabId, element) {
+            // הסתר את כל התוכן
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // הסר את המחלקה פעילה מכל הטאבים
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // הצג את התוכן הנבחר
+            document.getElementById(tabId).classList.add('active');
+            
+            // סמן את הטאב הפעיל
+            element.classList.add('active');
+        }
+        
+        const cards = {
+            greetings: {
+                title: "👋 ברכות",
+                items: [
+                    { text: "שמי _____. איך קורא לך?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "מה שלומך?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "אני קצת עצבן/ית כי אני לא מכיר/ה פה אף אחד", ages: ["9-12", "13-16", "16-18"] },
+                    { text: "אני לא חושב/ת שהכרנו. איך קורא לך?", ages: ["9-12", "13-16", "16-18"] },
+                    { text: "אפשר להצטרף אליך?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "איפה את/ה גר/ה?", ages: ["9-12", "13-16", "16-18"] },
+                    { text: "נראה שאת/ה נהנה/ת! רציתי לבוא להגיד שלום", ages: ["5-8", "9-12", "13-16", "16-18"] }
+                ]
+            },
+            compliments: {
+                title: "⭐ מחמאות",
+                items: [
+                    { text: "את/ה מנגן/ת ממש יפה! כמה זמן את/ה מנגן/ת?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "יש לך כתב יד יפה! איך את/ה שומר/ת עליו כל כך מסודר?", ages: ["9-12", "13-16", "16-18"] },
+                    { text: "השיער שלך יפה מאוד! מי עושה לך?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "השמלה שלך מקסימה! זה הצבע הכי אהוב עליך?", ages: ["5-8", "9-12", "13-16"] },
+                    { text: "הספר שלך נראה מעניין. על מה הוא?", ages: ["9-12", "13-16", "16-18"] },
+                    { text: "החולצה שלך ממש יפה", ages: ["5-8", "9-12", "13-16", "16-18"] }
+                ]
+            },
+            attention: {
+                title: "👀 תשומת לב משותפת",
+                items: [
+                    { text: "תסתכל/י על התור לאוטובוס. זה תמיד ככה?", ages: ["9-12", "13-16", "16-18"] },
+                    { text: "איזה רעש מוזר! את/ה יודע/ת מה זה?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "הם מכסחים את הדשא", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "את/ה משחק/ת פה?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "הרגל שלך נראית כואבת. מה קרה?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "נעים פה תחת העץ. את/ה תמיד אוכל/ת פה?", ages: ["5-8", "9-12", "13-16", "16-18"] }
+                ]
+            },
+            "getting-to-know": {
+                title: "🤔 שאלות היכרות",
+                items: [
+                    { text: "מה הכי אהוב עליך בבית הספר?", ages: ["5-8", "9-12", "13-16"] },
+                    { text: "איזו חיה היית רוצה למחמד?", ages: ["5-8", "9-12", "13-16"] },
+                    { text: "מתי יום ההולדת שלך?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "מה הכי אהוב עליך לעשות בסוף השבוע?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "מה האוכל הכי אהוב עליך?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "מה הממתק הכי אהוב עליך?", ages: ["5-8", "9-12", "13-16"] },
+                    { text: "מה הסרט הכי אהוב עליך?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "מה השיר הכי אהוב עליך?", ages: ["9-12", "13-16", "16-18"] },
+                    { text: "יש לך מטלות בבית? איזו הכי קשה?", ages: ["9-12", "13-16"] },
+                    { text: "מה טעם הגלידה הכי אהוב עליך?", ages: ["5-8", "9-12", "13-16"] },
+                    { text: "לאיזו מדינה הכי היית רוצה לנסוע?", ages: ["9-12", "13-16", "16-18"] },
+                    { text: "את/ה אוהב/ת לקרוא? מה הספר הכי אהוב עליך?", ages: ["9-12", "13-16", "16-18"] },
+                    { text: "מה המשחק הכי אהוב עליך?", ages: ["5-8", "9-12", "13-16"] },
+                    { text: "יש לך חיית מחמד? ספר/י לי עליה!", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "איך צריך להיות חבר טוב?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "מה היום הכי אהוב עליך בשבוע?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "את/ה משחק/ת משחקי מחשב?", ages: ["9-12", "13-16", "16-18"] },
+                    { text: "מה המקצוע הכי אהוב עליך?", ages: ["5-8", "9-12", "13-16"] },
+                    { text: "יש לך בדיחה אהובה?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "את/ה מנגן/ת על כלי נגינה?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "איזה סוג מוזיקה את/ה אוהב/ת?", ages: ["9-12", "13-16", "16-18"] },
+                    { text: "מה הצעצוע הכי אהוב עליך?", ages: ["5-8", "9-12"] },
+                    { text: "מה הכי אהוב עליך לעשות בחוץ?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "מה העונה הכי אהובה עליך?", ages: ["5-8", "9-12", "13-16", "16-18"] }
+                ]
+            },
+            joining: {
+                title: "🤝 הצטרפות",
+                items: [
+                    { text: "יש לך זמן לדבר?", ages: ["9-12", "13-16", "16-18"] },
+                    { text: "מה את/ה עושה? אפשר לשחק?", ages: ["5-8", "9-12", "13-16"] },
+                    { text: "אכפת לך אם אצטרף?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "יש מקום לעוד אחד?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "את/ה יכול/ה להראות לי איך זה עובד?", ages: ["5-8", "9-12", "13-16", "16-18"] }
+                ]
+            },
+            empathy: {
+                title: "💙 עזרה ותמיכה",
+                items: [
+                    { text: "את/ה נראה/ת אבוד/ה. אני יכול/ה לעזור?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "את/ה יכול/ה לעזור לי להגיע לספר על המדף העליון?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "התרגיל הזה קשה. את/ה יכול/ה לעזור?", ages: ["9-12", "13-16", "16-18"] },
+                    { text: "את/ה נראה/ת עצוב/ה. איך אפשר לעזור?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "איך הלך לך במבחן?", ages: ["9-12", "13-16", "16-18"] },
+                    { text: "את/ה יכול/ה לשמור על התיק שלי רגע?", ages: ["5-8", "9-12", "13-16", "16-18"] }
+                ]
+            },
+            israeli: {
+                title: "🇮🇱 נושאים ישראליים",
+                items: [
+                    { text: "איזו קבוצת כדורגל את/ה אוהב/ת?", ages: ["9-12", "13-16", "16-18"] },
+                    { text: "היית פעם בים המלח?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "מה החג הכי אהוב עליך?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "חומוס או פלאפל?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "איפה הכי אהבת לטייל בארץ?", ages: ["9-12", "13-16", "16-18"] },
+                    { text: "ים או הרים?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "איזה עיר בארץ הכי מעניינת אותך?", ages: ["9-12", "13-16", "16-18"] }
+                ]
+            },
+            creative: {
+                title: "✨ שאלות יצירתיות",
+                items: [
+                    { text: "איזה כוח על היית רוצה?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "מי האדם הכי נחמד שאת/ה מכיר/ה?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "מה התוכנית הכי אהובה עליך לחג?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "מה הדבר הכי נחמד שאמרו לך?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "ספר/י על משהו מביך שקרה לך", ages: ["9-12", "13-16", "16-18"] },
+                    { text: "אם היית פוגש/ת ג'יני, מה היית מבקש/ת?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "מה הדבר הכי מטורף שקרה לך?", ages: ["9-12", "13-16", "16-18"] },
+                    { text: "מה היית עושה אם היית בלתי נראה?", ages: ["5-8", "9-12", "13-16", "16-18"] }
+                ]
+            },
+            holidays: {
+                title: "🎉 חגים ואירועים",
+                items: [
+                    { text: "איך חוגגים אצלכם את השבת?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "מה התחפושת שלך בפורים?", ages: ["5-8", "9-12", "13-16"] },
+                    { text: "איך עברה לך החנוכה השנה?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "איך את/ה חוגג/ת יום הולדת?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "היה לך חופש נחמד?", ages: ["5-8", "9-12", "13-16", "16-18"] }
+                ]
+            },
+            family: {
+                title: "🏠 משפחה ובית",
+                items: [
+                    { text: "כמה אחים ואחיות יש לך?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "עם מי את/ה גר/ה?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "איך את/ה עוזר/ת בבית?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "יש לכם גינה?", ages: ["5-8", "9-12", "13-16", "16-18"] }
+                ]
+            },
+            hobbies: {
+                title: "🎯 תחביבים ופעילויות",
+                items: [
+                    { text: "לאיזה חוג את/ה הולך/ת?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "את/ה אוהב/ת לצייר?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "את/ה אוהב/ת לבשל?", ages: ["9-12", "13-16", "16-18"] },
+                    { text: "איזה ריקוד את/ה הכי אוהב/ת?", ages: ["5-8", "9-12", "13-16", "16-18"] },
+                    { text: "את/ה אוהב/ת לבנות דברים?", ages: ["5-8", "9-12", "13-16", "16-18"] }
+                ]
+            },
+            school: {
+                title: "🚌 בית ספר וכיתה",
+                items: [
+                    { text: "איך קוראים למורה שלך?", ages: ["5-8", "9-12", "13-16"] },
+                    { text: "מי הילד הכי מצחיק בכיתה?", ages: ["5-8", "9-12", "13-16"] },
+                    { text: "איזה פעילות הכי אהבת השבוע?", ages: ["5-8", "9-12", "13-16"] },
+                    { text: "איפה את/ה יושב/ת בכיתה?", ages: ["5-8", "9-12", "13-16"] },
+                    { text: "מה המקצוע הקל ביותר בשבילך?", ages: ["9-12", "13-16"] }
+                ]
+            }
+        };
+        
+        function selectAge(age) {
+            selectedAge = age;
+            document.querySelectorAll('.age-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+        
+        function toggleCategory(category, element) {
+            const checkbox = element.querySelector('input');
+            checkbox.checked = !checkbox.checked;
+            
+            if (checkbox.checked) {
+                element.classList.add('selected');
+                if (!selectedCategories.includes(category)) {
+                    selectedCategories.push(category);
+                }
+            } else {
+                element.classList.remove('selected');
+                selectedCategories = selectedCategories.filter(c => c !== category);
+            }
+        }
+        
+        function showCards() {
+            if (!selectedAge) {
+                alert('אנא בחר קבוצת גיל');
+                return;
+            }
+            
+            if (selectedCategories.length === 0) {
+                alert('אנא בחר לפחות קטגוריה אחת');
+                return;
+            }
+            
+            const container = document.getElementById('cardsContainer');
+            container.innerHTML = '';
+            
+            selectedCategories.forEach(categoryId => {
+                const category = cards[categoryId];
+                if (!category) return;
+                
+                const relevantCards = category.items.filter(card => 
+                    card.ages.includes(selectedAge)
+                );
+                
+                if (relevantCards.length === 0) return;
+                
+                const categorySection = document.createElement('div');
+                categorySection.className = 'category-section';
+                
+                const header = document.createElement('div');
+                header.className = 'category-header';
+                header.textContent = category.title;
+                categorySection.appendChild(header);
+                
+                const grid = document.createElement('div');
+                grid.className = 'cards-grid';
+                
+                relevantCards.forEach(cardData => {
+                    const card = document.createElement('div');
+                    card.className = `card ${categoryId}`;
+                    
+                    const cardText = document.createElement('div');
+                    cardText.className = 'card-text';
+                    cardText.textContent = cardData.text;
+                    
+                    card.appendChild(cardText);
+                    grid.appendChild(card);
+                });
+                
+                categorySection.appendChild(grid);
+                container.appendChild(categorySection);
+            });
+        }
+    </script>
+</body>
+</html>
